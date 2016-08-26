@@ -1,7 +1,7 @@
 'use strict';
 
 import React, {Component} from 'React';
-
+import Button from 'react-native-button';
 
 import {
   StyleSheet,
@@ -18,13 +18,12 @@ class GridView extends Component{
 		super(props);
 	}
 
-
 	render(){
 
 		return(
 
 		  <View style={styles.container}>
-        <Text>GridView</Text>
+        <Text>GridView</Text>      
       </View>
 
 		);

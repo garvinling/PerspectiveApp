@@ -1,7 +1,8 @@
 'use strict';
 
 import React, {Component} from 'React';
-
+import Button from 'react-native-button';
+import Callout from './Callouts';
 
 import {
   StyleSheet,
@@ -21,6 +22,13 @@ class PerspectiveMap extends Component{
 		console.log(props);
 	}
 
+  onRegionChange(region){
+    // console.log(region);
+  }
+
+  _handleIt(){
+    console.log('marker clicked');
+  }
 
 	render(){
 
@@ -34,7 +42,9 @@ class PerspectiveMap extends Component{
                     longitude: this.props.UserPosition.lng,
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
-                  }}      
+                  }}
+                  onRegionChange={this.onRegionChange}
+                  showsUserLocation={true}
           >
 
 	      	{this.props.LandMarks.map(landmark => (
@@ -42,12 +52,12 @@ class PerspectiveMap extends Component{
 	      		<MapView.Marker
 	      			key={landmark._id}
 	      			coordinate={{latitude:landmark.coordinates[0],longitude:landmark.coordinates[1]}}
-	      			title={landmark.name}
-	      			description={landmark.name}
-	      		/>
-
+	      		>
+              <MapView.Callout onPress={() => this._handleIt('123')} style={styles.callout}>
+                <Callout onPress={() => this._handleIt('123')} landmarkObject={landmark}/>
+              </MapView.Callout>
+            </MapView.Marker>
 	      	))}
-	    	
           </MapView>
       </View>
 
@@ -56,16 +66,10 @@ class PerspectiveMap extends Component{
 }
 
 const styles = StyleSheet.create({
-
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  callout:{
+    height:50,
+    width:200,
+    padding:0
   },
   container: {
     flex:1,
@@ -81,4 +85,10 @@ const styles = StyleSheet.create({
   },
 });
 
+
 module.exports = PerspectiveMap;
+
+
+
+
+
