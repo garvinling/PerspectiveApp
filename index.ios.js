@@ -3,6 +3,10 @@
 import React, { Component } from 'react';
 import PerspectiveMap from './components/PerspectiveMap';
 import GridView from './components/GridView';
+import UserSettings from './components/UserSettings';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
+
 import {
   AppRegistry,
   StyleSheet,
@@ -74,31 +78,41 @@ class PerspectiveApp extends Component {
     return (
 
       <TabBarIOS
-        unselectedTintColor="gray"
-        tintColor="darkslateblue"
+        unselectedTintColor="slategray"
+        tintColor="rebeccapurple"
         barTintColor="snow"
         selectedTab = {this.state.selectedTab}
         >
+          <Icon.TabBarItem
+                title="Map"
+                iconName="map"
+                selectedIconName="map"
+                selected={this.state.selectedTab === 'map'}
+                onPress= {() => {this.setState({selectedTab:'map'});}}
+            >
+                <PerspectiveMap UserPosition={{lat:this.state.user_latitude,lng:this.state.user_longitude}} LandMarks={this.state.landmarks}/>
+          </Icon.TabBarItem>
+         
+            <Icon.TabBarItem
+                title="Browse"
+                iconName="whatshot"
+                selectedIconName="whatshot"
+                selected={this.state.selectedTab === 'grid'}
+                onPress= {() => {this.setState({selectedTab:'grid'});}}
+            >
 
-          <TabBarIOS.Item
-            title="Map"
-            selected={this.state.selectedTab === 'map'}
-            icon={{uri:'featured'}}
-            onPress= {() => {this.setState({selectedTab:'map'});}}
-          >
-
-            <PerspectiveMap UserPosition={{lat:this.state.user_latitude,lng:this.state.user_longitude}} LandMarks={this.state.landmarks}/>
-
-          </TabBarIOS.Item>
-          <TabBarIOS.Item
-            title="Browse"
-            selected={this.state.selectedTab === 'grid'}
-            icon={{uri:'featured'}}
-             onPress= {() => {this.setState({selectedTab:'grid'});}}
-          >
             <GridView />            
-          </TabBarIOS.Item>
-     
+          </Icon.TabBarItem>
+                 <Icon.TabBarItem
+                title="More"
+                iconName="menu"
+                selectedIconName="menu"
+                selected={this.state.selectedTab === 'more'}
+                onPress= {() => {this.setState({selectedTab:'more'});}}
+            >
+
+            <UserSettings />            
+          </Icon.TabBarItem>
 
       </TabBarIOS>
     );

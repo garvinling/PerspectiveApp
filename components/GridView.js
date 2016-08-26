@@ -25,7 +25,6 @@ class GridView extends Component{
 
 		  <View style={styles.container}>
         <Text>GridView</Text>
-
       </View>
 
 		);
