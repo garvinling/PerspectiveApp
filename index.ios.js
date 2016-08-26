@@ -2,13 +2,21 @@
 
 import React, { Component } from 'react';
 import PerspectiveMap from './components/PerspectiveMap';
+import GridView from './components/GridView';
+import UserSettings from './components/UserSettings';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
+
 import {
   AppRegistry,
   StyleSheet,
   Text,
   View,
   AlertIOS,
-  requireNativeComponent
+  requireNativeComponent,
+  TabBarIOS,
+  StatusBar
+
 } from 'react-native';
 
 import MapView from 'react-native-maps';
@@ -29,7 +37,8 @@ class PerspectiveApp extends Component {
 
         user_latitude  : DEFAULT_LATITUDE,
         user_longitude : DEFAULT_LONGITUDE,
-        landmarks      : []
+        landmarks      : [],
+        selectedTab    : 'map'
     }
 
     this.getUserLocation();
@@ -58,7 +67,6 @@ class PerspectiveApp extends Component {
       .then((response) => response.json())  
         .then( (responseData) => 
               {
-                console.log(responseData);
                 this.setState({landmarks:responseData});
               }
         )
@@ -69,17 +77,53 @@ class PerspectiveApp extends Component {
 
     return (
 
-      <View style={styles.container}>
-
-          <PerspectiveMap UserPosition={{lat:this.state.user_latitude,lng:this.state.user_longitude}} LandMarks={this.state.landmarks}/>
+      <TabBarIOS
+        unselectedTintColor="slategray"
+        tintColor="rebeccapurple"
+        barTintColor="snow"
+        selectedTab = {this.state.selectedTab}
+        >
+          <Icon.TabBarItem
+                title="Map"
+                iconName="map"
+                selectedIconName="map"
+                selected={this.state.selectedTab === 'map'}
+                onPress= {() => {this.setState({selectedTab:'map'});}}
+            >
+                <PerspectiveMap UserPosition={{lat:this.state.user_latitude,lng:this.state.user_longitude}} LandMarks={this.state.landmarks}/>
+          </Icon.TabBarItem>
          
-      </View>
+            <Icon.TabBarItem
+                title="Browse"
+                iconName="whatshot"
+                selectedIconName="whatshot"
+                selected={this.state.selectedTab === 'grid'}
+                onPress= {() => {this.setState({selectedTab:'grid'});}}
+            >
+
+            <GridView />            
+          </Icon.TabBarItem>
+                 <Icon.TabBarItem
+                title="More"
+                iconName="menu"
+                selectedIconName="menu"
+                selected={this.state.selectedTab === 'more'}
+                onPress= {() => {this.setState({selectedTab:'more'});}}
+            >
+
+            <UserSettings />            
+          </Icon.TabBarItem>
+
+      </TabBarIOS>
     );
   }
 }
 
 const styles = StyleSheet.create({
-
+  test:{
+     borderColor:'blue',
+     borderStyle:'solid'
+  },
   welcome: {
     fontSize: 20,
     textAlign: 'center',

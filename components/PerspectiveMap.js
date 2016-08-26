@@ -1,13 +1,15 @@
 'use strict';
 
 import React, {Component} from 'React';
-
+import Button from 'react-native-button';
+import Callout from './Callouts';
 
 import {
   StyleSheet,
   Text,
   View,
-  requireNativeComponent
+  requireNativeComponent,
+  StatusBar
 } from 'react-native';
 
 import MapView from 'react-native-maps';
@@ -17,9 +19,15 @@ class PerspectiveMap extends Component{
 
 	constructor(props){
 		super(props);
-		console.log(props);
 	}
 
+  onRegionChange(region){
+    // console.log(region);
+  }
+
+  _openLandMark(){
+    console.log('marker clicked');
+  }
 
 	render(){
 
@@ -33,7 +41,9 @@ class PerspectiveMap extends Component{
                     longitude: this.props.UserPosition.lng,
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
-                  }}      
+                  }}
+                  onRegionChange={this.onRegionChange}
+                  showsUserLocation={true}
           >
 
 	      	{this.props.LandMarks.map(landmark => (
@@ -41,12 +51,12 @@ class PerspectiveMap extends Component{
 	      		<MapView.Marker
 	      			key={landmark._id}
 	      			coordinate={{latitude:landmark.coordinates[0],longitude:landmark.coordinates[1]}}
-	      			title={landmark.name}
-	      			description={landmark.name}
-	      		/>
-
+	      		>
+              <MapView.Callout onPress={() => this._openLandMark()} style={styles.callout}>
+                <Callout onPress={() => this._openLandMark()} landmarkObject={landmark}/>
+              </MapView.Callout>
+            </MapView.Marker>
 	      	))}
-	    	
           </MapView>
       </View>
 
@@ -55,24 +65,13 @@ class PerspectiveMap extends Component{
 }
 
 const styles = StyleSheet.create({
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  callout:{
+    height:50,
+    width:200,
+    padding:0
   },
   container: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    height: 400,
-    width: 400,
+    flex:1,
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
@@ -81,8 +80,14 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0,
+    bottom: 0
   },
 });
 
+
 module.exports = PerspectiveMap;
+
+
+
+
+
