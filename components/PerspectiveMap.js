@@ -19,14 +19,13 @@ class PerspectiveMap extends Component{
 
 	constructor(props){
 		super(props);
-		console.log(props);
 	}
 
   onRegionChange(region){
     // console.log(region);
   }
 
-  _handleIt(){
+  _openLandMark(){
     console.log('marker clicked');
   }
 
@@ -53,8 +52,8 @@ class PerspectiveMap extends Component{
 	      			key={landmark._id}
 	      			coordinate={{latitude:landmark.coordinates[0],longitude:landmark.coordinates[1]}}
 	      		>
-              <MapView.Callout onPress={() => this._handleIt('123')} style={styles.callout}>
-                <Callout onPress={() => this._handleIt('123')} landmarkObject={landmark}/>
+              <MapView.Callout onPress={() => this._openLandMark()} style={styles.callout}>
+                <Callout onPress={() => this._openLandMark()} landmarkObject={landmark}/>
               </MapView.Callout>
             </MapView.Marker>
 	      	))}
