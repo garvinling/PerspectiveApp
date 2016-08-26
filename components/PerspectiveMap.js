@@ -56,6 +56,7 @@ class PerspectiveMap extends Component{
 }
 
 const styles = StyleSheet.create({
+
   welcome: {
     fontSize: 20,
     textAlign: 'center',
@@ -67,13 +68,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   container: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    height: 400,
-    width: 400,
+    flex:1,
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
@@ -82,7 +77,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0,
+    bottom: 0
   },
 });
 

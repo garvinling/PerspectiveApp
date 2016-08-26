@@ -76,7 +76,7 @@ class PerspectiveApp extends Component {
       <TabBarIOS
         unselectedTintColor="gray"
         tintColor="darkslateblue"
-        barTintColor="white"
+        barTintColor="snow"
         selectedTab = {this.state.selectedTab}
         >
 
@@ -106,7 +106,10 @@ class PerspectiveApp extends Component {
 }
 
 const styles = StyleSheet.create({
-
+  test:{
+     borderColor:'blue',
+     borderStyle:'solid'
+  },
   welcome: {
     fontSize: 20,
     textAlign: 'center',
