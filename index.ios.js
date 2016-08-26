@@ -2,13 +2,17 @@
 
 import React, { Component } from 'react';
 import PerspectiveMap from './components/PerspectiveMap';
+import GridView from './components/GridView';
 import {
   AppRegistry,
   StyleSheet,
   Text,
   View,
   AlertIOS,
-  requireNativeComponent
+  requireNativeComponent,
+  TabBarIOS,
+  StatusBar
+
 } from 'react-native';
 
 import MapView from 'react-native-maps';
@@ -29,7 +33,8 @@ class PerspectiveApp extends Component {
 
         user_latitude  : DEFAULT_LATITUDE,
         user_longitude : DEFAULT_LONGITUDE,
-        landmarks      : []
+        landmarks      : [],
+        selectedTab    : 'map'
     }
 
     this.getUserLocation();
@@ -58,7 +63,6 @@ class PerspectiveApp extends Component {
       .then((response) => response.json())  
         .then( (responseData) => 
               {
-                console.log(responseData);
                 this.setState({landmarks:responseData});
               }
         )
@@ -69,11 +73,34 @@ class PerspectiveApp extends Component {
 
     return (
 
-      <View style={styles.container}>
+      <TabBarIOS
+        unselectedTintColor="gray"
+        tintColor="darkslateblue"
+        barTintColor="white"
+        selectedTab = {this.state.selectedTab}
+        >
 
-          <PerspectiveMap UserPosition={{lat:this.state.user_latitude,lng:this.state.user_longitude}} LandMarks={this.state.landmarks}/>
-         
-      </View>
+          <TabBarIOS.Item
+            title="Map"
+            selected={this.state.selectedTab === 'map'}
+            icon={{uri:'featured'}}
+            onPress= {() => {this.setState({selectedTab:'map'});}}
+          >
+
+            <PerspectiveMap UserPosition={{lat:this.state.user_latitude,lng:this.state.user_longitude}} LandMarks={this.state.landmarks}/>
+
+          </TabBarIOS.Item>
+          <TabBarIOS.Item
+            title="Browse"
+            selected={this.state.selectedTab === 'grid'}
+            icon={{uri:'featured'}}
+             onPress= {() => {this.setState({selectedTab:'grid'});}}
+          >
+            <GridView />            
+          </TabBarIOS.Item>
+     
+
+      </TabBarIOS>
     );
   }
 }

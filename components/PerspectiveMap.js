@@ -7,7 +7,8 @@ import {
   StyleSheet,
   Text,
   View,
-  requireNativeComponent
+  requireNativeComponent,
+  StatusBar
 } from 'react-native';
 
 import MapView from 'react-native-maps';
