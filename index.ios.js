@@ -90,7 +90,7 @@ class PerspectiveApp extends Component {
                 selected={this.state.selectedTab === 'map'}
                 onPress= {() => {this.setState({selectedTab:'map'});}}
             >
-                <PerspectiveMap UserPosition={{lat:this.state.user_latitude,lng:this.state.user_longitude}} LandMarks={this.state.landmarks}/>
+            <PerspectiveMap UserPosition={{lat:this.state.user_latitude,lng:this.state.user_longitude}} LandMarks={this.state.landmarks}/>
           </Icon.TabBarItem>
          
             <Icon.TabBarItem
