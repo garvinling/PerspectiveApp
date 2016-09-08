@@ -45,9 +45,8 @@ class PerspectiveMap extends Component{
 
   _openLandMark(landmark){
       
-      console.log(landmark);
-      // this.setState({landmarkName:'lol'})
-      this.refs.modal4.open();
+      this.setState({landmarkName:landmark.name})
+      this.refs.landmarkModal.open();
 
   }
 
@@ -86,20 +85,26 @@ class PerspectiveMap extends Component{
           </MapView>
 
 
-        <Modal style={[styles.modal, styles.modal4]} position={"bottom"} ref={"modal4"}>
+        <Modal style={[styles.modal, styles.landmarkModal]} position={"bottom"} ref={"landmarkModal"}>
           
       
           <Image style={styles.backgroundImage} source={{uri:'https://hd.unsplash.com/photo-1446226760091-cc85becf39b4'}} resizeMode={Image.resizeMode.contain}>
             <View style={styles.landmarkOverlay}/>
+            
             <View style={styles.landmarkData}>
-             <Text style={styles.landmarkName}>{this.state.landmarkName}</Text>
-<Icon
-  name='camera-alt'
-  size={30}
-  color='#ffffff'
-  style={styles.landmarkIcon}
-/>
-             <Text style={styles.landmarkInfo}>{this.state.landmarkPhotoCount}</Text>
+
+               <Text style={styles.landmarkName}>{this.state.landmarkName}</Text>
+                
+               <View style={styles.countContainer}>
+                <Icon name='camera-alt' size={25} color='#ffffff' style={styles.landmarkIcon} />
+                <Text style={styles.landmarkInfo}>{this.state.landmarkPhotoCount}</Text>
+               </View>
+   
+               <View style={styles.leaderContainer}>
+                <Icon name='directions-walk' size={25} color='#ffffff' style={styles.landmarkIcon} />
+                <Text style={styles.landmarkInfo}>{this.state.landmarkPhotoCount}</Text>
+               </View>
+
 
             </View>
           </Image>
@@ -133,7 +138,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  modal4:{
+  landmarkModal:{
     height:300
   },
   text: {
@@ -150,10 +155,10 @@ const styles = StyleSheet.create({
 
     position:'absolute',
     backgroundColor:'transparent',
-    top:175,
+    top:125,
     left:25,
     bottom:0,
-    right:0,
+    right:0
     // borderRadius: 4,
     // borderWidth: 0.5,
     // borderColor: 'red'
@@ -171,13 +176,33 @@ const styles = StyleSheet.create({
     height:400
   },
   landmarkName:{
-    color:'white'
+    color:'white',
+    paddingLeft:10,
+    paddingRight:10,
+    paddingBottom:15
   },
   landmarkIcon:{
 
+    paddingLeft:10,
+    paddingRight:10
+
   },
   landmarkInfo:{
-    color:'white'
+
+    color:'white',
+    height:25,
+    width:100,
+    paddingTop:2
+
+  },
+  countContainer:{
+    flex:1,
+    flexDirection:'row'
+
+  },
+  leaderContainer:{
+    flex:3,
+    flexDirection:'row'
   }
 
 });
