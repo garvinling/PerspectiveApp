@@ -179,7 +179,8 @@ const styles = StyleSheet.create({
     color:'white',
     paddingLeft:10,
     paddingRight:10,
-    paddingBottom:15
+    paddingBottom:15,
+    fontSize:24
   },
   landmarkIcon:{
 
