@@ -33,7 +33,8 @@ class PerspectiveMap extends Component{
         sliderValue:0.3,
         landmarkName: 'Pasadena Coffee House',
         landmarkPhotoCount: 0,
-        landmarkLeader: 'garvinling'
+        landmarkLeader: 'garvinling',
+        landmarkLeaderImage : 'https://hd.unsplash.com/photo-1446226760091-cc85becf39b4'  //default image
 
 
     }
@@ -45,7 +46,24 @@ class PerspectiveMap extends Component{
 
   _openLandMark(landmark){
       
-      this.setState({landmarkName:landmark.name})
+      var url = 'http://localhost:3000/api/photos/' + landmark.leader_image;  
+
+      fetch(url,{method:'GET'})
+        .then((response) => response.json())  
+          .then( (responseData) => 
+                { 
+    
+                    this.setState({
+
+                      landmarkName:landmark.name,
+                      landmarkPhotoCount:landmark.photo_count,
+                      landmarkLeaderImage:responseData.url 
+
+
+                    });
+                }
+          )
+
       this.refs.landmarkModal.open();
 
   }
@@ -87,8 +105,7 @@ class PerspectiveMap extends Component{
 
         <Modal style={[styles.modal, styles.landmarkModal]} position={"bottom"} ref={"landmarkModal"}>
           
-      
-          <Image style={styles.backgroundImage} source={{uri:'https://hd.unsplash.com/photo-1446226760091-cc85becf39b4'}} resizeMode={Image.resizeMode.contain}>
+          <Image style={styles.backgroundImage} source={{uri:this.state.landmarkLeaderImage}} resizeMode='cover'>
             <View style={styles.landmarkOverlay}/>
             
             <View style={styles.landmarkData}>
@@ -146,10 +163,12 @@ const styles = StyleSheet.create({
     fontSize: 22
   },
   backgroundImage: {
-    flex: 1,
-    resizeMode: 'cover', // or 'stretch'
-    width:400,
-    height:200
+
+    position:'absolute',
+    top: 0,
+    bottom:0,
+    left:0,
+    right:0
   },
   landmarkData:{
 
