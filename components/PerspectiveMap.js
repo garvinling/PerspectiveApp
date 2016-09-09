@@ -3,13 +3,18 @@
 import React, {Component} from 'React';
 import Button from 'react-native-button';
 import Callout from './Callouts';
+import LandmarkModal from './LandmarkModal';
+import Modal from 'react-native-modalbox';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import {
   StyleSheet,
   Text,
   View,
   requireNativeComponent,
-  StatusBar
+  StatusBar,
+  TouchableHighlight,
+  Image
 } from 'react-native';
 
 import MapView from 'react-native-maps';
@@ -19,22 +24,69 @@ class PerspectiveMap extends Component{
 
 	constructor(props){
 		super(props);
+
+    this.state = {
+
+        isOpen:false,
+        isDisabled:false,
+        swipeToClose:true,
+        sliderValue:0.3,
+        landmarkName: 'Pasadena Coffee House',
+        landmarkPhotoCount: 0,
+        landmarkLeader: 'garvinling',
+        landmarkLeaderImage : 'https://hd.unsplash.com/photo-1446226760091-cc85becf39b4'  //default image
+
+
+    }
 	}
 
   onRegionChange(region){
     // console.log(region);
   }
 
-  _openLandMark(){
-    console.log('marker clicked');
+  _openLandMark(landmark){
+      
+      var url = 'http://localhost:3000/api/photos/' + landmark.leader_image;  
+
+      fetch(url,{method:'GET'})
+        .then((response) => response.json())  
+          .then( (responseData) => 
+                { 
+    
+                    this.setState({
+
+                      landmarkName:landmark.name,
+                      landmarkPhotoCount:landmark.photo_count,
+                      landmarkLeaderImage:responseData.url 
+
+
+                    });
+                }
+          )
+
+      this.refs.landmarkModal.open();
+
   }
+
+  _onPressLandmark(){
+
+    console.log('LANDMARK CLICKED');
+
+
+  }
+
+
+  onPress(){
+
+    console.log('Marker Pressed');
+  }
+
 
 	render(){
 
 		return(
 
 		  <View style={styles.container}>
-
           <MapView style={styles.map}     
                    initialRegion={{
                     latitude: this.props.UserPosition.lat,
@@ -43,21 +95,44 @@ class PerspectiveMap extends Component{
                     longitudeDelta: 0.0421,
                   }}
                   onRegionChange={this.onRegionChange}
-                  showsUserLocation={true}
-          >
+                  showsUserLocation={false}>
 
 	      	{this.props.LandMarks.map(landmark => (
 
-	      		<MapView.Marker
+            <MapView.Marker
 	      			key={landmark._id}
 	      			coordinate={{latitude:landmark.coordinates[0],longitude:landmark.coordinates[1]}}
+              onPress={() => this._openLandMark(landmark)}
+              style={{width:10,height:10}}
+              image={require('../assets/icons/ic_place_2x.png')}
+
 	      		>
-              <MapView.Callout onPress={() => this._openLandMark()} style={styles.callout}>
-                <Callout onPress={() => this._openLandMark()} landmarkObject={landmark}/>
-              </MapView.Callout>
             </MapView.Marker>
 	      	))}
           </MapView>
+
+
+        <Modal style={[styles.modal, styles.landmarkModal]} position={"bottom"} ref={"landmarkModal"}>
+          <Image style={styles.backgroundImage} source={{uri:this.state.landmarkLeaderImage}} resizeMode='cover' >
+             
+              <View style={styles.landmarkOverlay}/>
+               <TouchableHighlight onPress={this._onPressLandmark} style={{flex:1}} underlayColor='rgba(0,0,0,0.2)'>
+                <View style={styles.landmarkData}>
+                   <Text style={styles.landmarkName} onPress={this._onPressLandmark}>{this.state.landmarkName}</Text>
+                   <View style={styles.countContainer}>
+                    <Icon name='camera-alt' size={25} color='#ffffff' style={styles.landmarkIcon} />
+                    <Text style={styles.landmarkInfo}>{this.state.landmarkPhotoCount}</Text>
+                   </View> 
+
+                   <View style={styles.leaderContainer}>
+                    <Icon name='directions-walk' size={25} color='#ffffff' style={styles.landmarkIcon} />
+                    <Text style={styles.landmarkInfo}>{this.state.landmarkPhotoCount}</Text>
+                   </View>
+                </View>                  
+              </TouchableHighlight>
+
+          </Image>
+        </Modal>
       </View>
 
 		);
@@ -82,6 +157,80 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0
   },
+  modal: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  landmarkModal:{
+    height:300
+  },
+  text: {
+    color: "black",
+    fontSize: 22
+  },
+  backgroundImage: {
+
+    position:'absolute',
+    top: 0,
+    bottom:0,
+    left:0,
+    right:0
+  },
+  landmarkData:{
+
+    position:'absolute',
+    backgroundColor:'transparent',
+    top:125,
+    left:25,
+    bottom:0,
+    right:0
+    // borderRadius: 4,
+    // borderWidth: 0.5,
+    // borderColor: 'red'
+
+
+  },
+  landmarkOverlay:{
+    position:'absolute',
+    backgroundColor:'rgba(0,0,0,0.6)',
+    top:0,
+    left:0,
+    bottom:0,
+    right:0,
+    width:400,
+    height:400
+  },
+  landmarkName:{
+    color:'white',
+    paddingLeft:10,
+    paddingRight:10,
+    paddingBottom:15,
+    fontSize:24
+  },
+  landmarkIcon:{
+
+    paddingLeft:10,
+    paddingRight:10
+
+  },
+  landmarkInfo:{
+
+    color:'white',
+    height:25,
+    width:100,
+    paddingTop:2
+
+  },
+  countContainer:{
+    flex:1,
+    flexDirection:'row'
+
+  },
+  leaderContainer:{
+    flex:3,
+    flexDirection:'row'
+  }
+
 });
 
 
