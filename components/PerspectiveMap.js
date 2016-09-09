@@ -68,10 +68,19 @@ class PerspectiveMap extends Component{
 
   }
 
+  _onPressLandmark(){
+
+    console.log('LANDMARK CLICKED');
+
+
+  }
+
+
   onPress(){
 
     console.log('Marker Pressed');
   }
+
 
 	render(){
 
@@ -104,28 +113,25 @@ class PerspectiveMap extends Component{
 
 
         <Modal style={[styles.modal, styles.landmarkModal]} position={"bottom"} ref={"landmarkModal"}>
-          
-          <Image style={styles.backgroundImage} source={{uri:this.state.landmarkLeaderImage}} resizeMode='cover'>
-            <View style={styles.landmarkOverlay}/>
-            
-            <View style={styles.landmarkData}>
+          <Image style={styles.backgroundImage} source={{uri:this.state.landmarkLeaderImage}} resizeMode='cover' >
+             
+              <View style={styles.landmarkOverlay}/>
+               <TouchableHighlight onPress={this._onPressLandmark} style={{flex:1}} underlayColor='rgba(0,0,0,0.2)'>
+                <View style={styles.landmarkData}>
+                   <Text style={styles.landmarkName} onPress={this._onPressLandmark}>{this.state.landmarkName}</Text>
+                   <View style={styles.countContainer}>
+                    <Icon name='camera-alt' size={25} color='#ffffff' style={styles.landmarkIcon} />
+                    <Text style={styles.landmarkInfo}>{this.state.landmarkPhotoCount}</Text>
+                   </View> 
 
-               <Text style={styles.landmarkName}>{this.state.landmarkName}</Text>
-                
-               <View style={styles.countContainer}>
-                <Icon name='camera-alt' size={25} color='#ffffff' style={styles.landmarkIcon} />
-                <Text style={styles.landmarkInfo}>{this.state.landmarkPhotoCount}</Text>
-               </View>
-   
-               <View style={styles.leaderContainer}>
-                <Icon name='directions-walk' size={25} color='#ffffff' style={styles.landmarkIcon} />
-                <Text style={styles.landmarkInfo}>{this.state.landmarkPhotoCount}</Text>
-               </View>
+                   <View style={styles.leaderContainer}>
+                    <Icon name='directions-walk' size={25} color='#ffffff' style={styles.landmarkIcon} />
+                    <Text style={styles.landmarkInfo}>{this.state.landmarkPhotoCount}</Text>
+                   </View>
+                </View>                  
+              </TouchableHighlight>
 
-
-            </View>
           </Image>
-
         </Modal>
       </View>
 
