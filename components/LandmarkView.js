@@ -13,7 +13,7 @@ import {
 
 
 
-class LandmarkModal extends Component{
+class LandmarkView extends Component{
 
 	constructor(props){
 
@@ -23,7 +23,7 @@ class LandmarkModal extends Component{
 
 
 	render(){
-
+		console.log('LANDMARK LOADED');
 		return(
 
 			<View>
@@ -41,4 +41,4 @@ class LandmarkModal extends Component{
 
 
 
-module.exports = LandmarkModal;
+module.exports = LandmarkView;
