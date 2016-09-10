@@ -74,16 +74,15 @@ class PerspectiveMap extends Component{
 
   _renderScene(route,navigator){
     
-    const MAP_VIEW      = 1;
-    const LANDMARK_VIEW = 2;
+   
 
-    if(route.id === MAP_VIEW) {
+    if(route.id === 'MapView') {
 
       return(
         <PerspectiveMapView lat={this.props.UserPosition.lat} lng={this.props.UserPosition.lng} landmarks={this.props.Landmarks} navigator={navigator}/>
       );
     
-    } else if(route.id === LANDMARK_VIEW){
+    } else if(route.id === 'LandmarkView'){
 
       return (
         
@@ -103,7 +102,7 @@ class PerspectiveMap extends Component{
       <View style={{flex:1}}>
       <StatusBar barStyle="light-content"/>
       <Navigator 
-          initialRoute={{id:1}} 
+          initialRoute={{id:'MapView'}} 
           renderScene={(route,nav) => {return this._renderScene(route,nav)}} 
           navigationBar={<Navigator.NavigationBar style={{backgroundColor: '#5B3B81'}}     
           routeMapper={NavigationBarHeader}     />}     />
@@ -153,7 +152,7 @@ class PerspectiveMapView extends Component{
 
     this.props.navigator.push({
 
-      id : 2
+      id : 'LandmarkView'
 
     });
   }
@@ -181,11 +180,6 @@ class PerspectiveMapView extends Component{
       this.refs.landmarkModal.open();
 
   }
-  // _onForward(){
-  //   this.props.navigator.push({
-  //     title:'Scene' + nextIndex,
-  //   })
-  // }
 
   render(){
 
@@ -248,7 +242,19 @@ const NavigationBarHeader = {
 
     LeftButton: (route, navigator, index, navState) =>
           { 
-            return (<Text></Text>);
+            if(route.id === 'LandmarkView'){
+              return (
+                <TouchableHighlight underlayColor='rgba(91,59,129,0.5)' onPress={navigator.pop}>
+                 <View style={styles.backButton}>
+                    <Icon name='chevron-left' size={25} color='#ffffff' style={styles.landmarkIcon} />
+                 </View>
+                </TouchableHighlight>
+              );
+            } else {
+
+               return (<Text></Text>);
+
+            }
           },
     RightButton: (route, navigator, index, navState) =>
            { 
@@ -256,7 +262,7 @@ const NavigationBarHeader = {
            },
     Title: (route, navigator, index, navState) =>
            { 
-            return (<Text style={styles.headerBarTitle}>Awesome Nav Bar</Text>); 
+            return (<Text style={styles.headerBarTitle}>{route.id}</Text>); 
            }
 };
 
@@ -264,7 +270,11 @@ const NavigationBarHeader = {
 
 
 const styles = StyleSheet.create({
+  backButton:{
 
+    marginTop:10
+
+  },
   headerBarTitle:{
 
     color:'white',

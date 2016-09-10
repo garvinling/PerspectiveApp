@@ -7,7 +7,9 @@ import {
 
 	Stylesheet,
 	Text,
-	View
+	View,
+	Navigator
+
 
 } from 'react-native';
 
@@ -15,15 +17,20 @@ import {
 
 class LandmarkView extends Component{
 
-	constructor(props){
+	constructor(props,context){
 
-		super(props);
+		super(props,context);
+    	this._goBack = this._goBack.bind(this);
 
 	}
 
+	_goBack(){
+
+		this.props.navigator.pop();
+
+	}
 
 	render(){
-		console.log('LANDMARK LOADED');
 		return(
 
 			<View>
