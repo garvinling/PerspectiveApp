@@ -100,7 +100,15 @@ class PerspectiveMap extends Component{
 
 	render(){
 		return(
-      <Navigator initialRoute={{id:1}} renderScene={(route,nav) => {return this._renderScene(route,nav)}}/>
+      <View style={{flex:1}}>
+      <StatusBar barStyle="light-content"/>
+      <Navigator 
+          initialRoute={{id:1}} 
+          renderScene={(route,nav) => {return this._renderScene(route,nav)}} 
+          navigationBar={<Navigator.NavigationBar style={{backgroundColor: '#5B3B81'}}     
+          routeMapper={NavigationBarHeader}     />}     />
+
+      </View>
 		);
 	}
 }
@@ -236,7 +244,34 @@ class PerspectiveMapView extends Component{
 }
 
 
+const NavigationBarHeader = {
+
+    LeftButton: (route, navigator, index, navState) =>
+          { 
+            return (<Text></Text>);
+          },
+    RightButton: (route, navigator, index, navState) =>
+           { 
+            return (<Text></Text>); 
+           },
+    Title: (route, navigator, index, navState) =>
+           { 
+            return (<Text style={styles.headerBarTitle}>Awesome Nav Bar</Text>); 
+           }
+};
+
+
+
+
 const styles = StyleSheet.create({
+
+  headerBarTitle:{
+
+    color:'white',
+    alignItems:'center',
+    marginTop:10
+
+  },
   callout:{
     height:50,
     width:200,
