@@ -2,13 +2,14 @@
 
 
 import React, {Component} from 'React';
-
+import PhotoFeedImage from './PhotoFeedImage';
 import {
 
-	Stylesheet,
+	StyleSheet,
 	Text,
 	View,
-	Navigator
+	Navigator,
+	ScrollView
 
 
 } from 'react-native';
@@ -22,6 +23,13 @@ class LandmarkView extends Component{
 		super(props,context);
     	this._goBack = this._goBack.bind(this);
 
+    	this.state = {
+
+    		photoFeed : []
+
+    	};
+
+    	this.loadPhotoFeed();
 	}
 
 	_goBack(){
@@ -30,13 +38,41 @@ class LandmarkView extends Component{
 
 	}
 
+	loadPhotoFeed(){
+       
+       const url = 'http://localhost:3000/api/photos/feed/' + this.props.landmark_id;
+       fetch(url,{method:'GET'})
+        .then((response) => response.json())  
+          .then( (responseData) => 
+                { 
+
+
+    					this.setState({photoFeed:responseData});
+    		
+  
+                }
+          )
+
+	}
+
+
+
+
 	render(){
+
+
 		return(
 
 			<View>
+				<ScrollView style={styles.scrollView}  automaticallyAdjustContentInsets={true}>
 
-				<Text>Modal</Text>
+				 {this.state.photoFeed.map(photo => (
 
+				 	<PhotoFeedImage key={photo._id} photo={photo} />
+
+				 ))}
+
+				</ScrollView>
 			</View>
 
 		);
@@ -45,7 +81,18 @@ class LandmarkView extends Component{
 
 }
 
+const styles = StyleSheet.create({
 
+	scrollView : {
+
+		marginTop:63,
+    	backgroundColor: '#6A85B1',
+		height:600,
+
+	}
+
+
+});
 
 
 module.exports = LandmarkView;

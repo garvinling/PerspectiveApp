@@ -48,7 +48,7 @@ class PerspectiveMap extends Component{
 
   _openLandMark(landmark){
       
-      var url = 'http://localhost:3000/api/photos/' + landmark.leader_image;  
+      const url = 'http://localhost:3000/api/photos/' + landmark.leader_image;  
 
       fetch(url,{method:'GET'})
         .then((response) => response.json())  
@@ -75,7 +75,6 @@ class PerspectiveMap extends Component{
   _renderScene(route,navigator){
     
    
-
     if(route.id === 'MapView') {
 
       return(
@@ -86,7 +85,7 @@ class PerspectiveMap extends Component{
 
       return (
         
-        <LandmarkView navigator={navigator}/>
+        <LandmarkView navigator={navigator} landmark_id={route.landmark_id}/>
 
       );
 
@@ -135,6 +134,7 @@ class PerspectiveMapView extends Component{
         isDisabled:false,
         swipeToClose:true,
         sliderValue:0.3,
+        landmarkId : '',
         landmarkName: 'Pasadena Coffee House',
         landmarkPhotoCount: 0,
         landmarkLeader: 'garvinling',
@@ -152,7 +152,8 @@ class PerspectiveMapView extends Component{
 
     this.props.navigator.push({
 
-      id : 'LandmarkView'
+      id : 'LandmarkView',
+      landmark_id : this.state.landmarkId
 
     });
   }
@@ -168,6 +169,7 @@ class PerspectiveMapView extends Component{
     
                     this.setState({
 
+                      landmarkId:landmark._id,
                       landmarkName:landmark.name,
                       landmarkPhotoCount:landmark.photo_count,
                       landmarkLeaderImage:responseData.url 
