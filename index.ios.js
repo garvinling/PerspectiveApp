@@ -14,6 +14,7 @@ import {
   View,
   AlertIOS,
   requireNativeComponent,
+  NavigatorIOS,
   TabBarIOS,
   StatusBar
 
@@ -66,7 +67,7 @@ class PerspectiveApp extends Component {
     fetch('http://localhost:3000/api/landmarks',{method:'GET'})
       .then((response) => response.json())  
         .then( (responseData) => 
-              {
+              { 
                 this.setState({landmarks:responseData});
               }
         )
@@ -90,7 +91,7 @@ class PerspectiveApp extends Component {
                 selected={this.state.selectedTab === 'map'}
                 onPress= {() => {this.setState({selectedTab:'map'});}}
             >
-            <PerspectiveMap UserPosition={{lat:this.state.user_latitude,lng:this.state.user_longitude}} LandMarks={this.state.landmarks}/>
+            <PerspectiveMap UserPosition={{lat:this.state.user_latitude,lng:this.state.user_longitude}} Landmarks={this.state.landmarks}/>
           </Icon.TabBarItem>
          
             <Icon.TabBarItem
