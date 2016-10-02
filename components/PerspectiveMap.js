@@ -188,6 +188,7 @@ class PerspectiveMapView extends Component{
     return(
 
      <View style={styles.container}>
+
           <MapView style={styles.map}     
                    initialRegion={{
                     latitude: this.props.lat,
