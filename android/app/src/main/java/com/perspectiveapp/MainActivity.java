@@ -1,6 +1,8 @@
 package com.perspectiveapp;
 
 import com.facebook.react.ReactActivity;
+import com.magus.fblogin.FacebookLoginPackage;
+import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.airbnb.android.react.maps.MapsPackage;
 
