@@ -72,30 +72,24 @@ class PerspectiveMapNavigator extends Component{
 
   }
 
-
-
   _renderScene(route,navigator){
-    
-   
+  
     if(route.id === 'MapView') {
 
       return(
-        <PerspectiveMapView lat={this.props.UserPosition.lat} lng={this.props.UserPosition.lng} landmarks={this.props.Landmarks} navigator={navigator}/>
+        <PerspectiveMapView user={this.props.user} lat={this.props.UserPosition.lat} lng={this.props.UserPosition.lng} landmarks={this.props.Landmarks} navigator={navigator}/>
       );
     
     } else if(route.id === 'LandmarkView'){
 
       return (
         
-        <LandmarkView navigator={navigator} landmark_id={route.landmark_id}/>
+        <LandmarkView user={this.props.user} navigator={navigator} landmark_id={route.landmark_id}/>
 
       );
 
     }
   }
-
-
-
 
 
 	render(){
@@ -116,130 +110,6 @@ class PerspectiveMapNavigator extends Component{
 
 
 
-
-// class PerspectiveMapView extends Component{
-
-//   static propTypes = {
-//     lat: PropTypes.number.isRequired,
-//     lng: PropTypes.number.isRequired,
-//     landmarks:PropTypes.array.isRequired
-//   }
-
-//   constructor(props,context){
-
-//     super(props,context);
-//     this._onPressLandmark = this._onPressLandmark.bind(this);
-//     // this._onBack    = this._onBack.bind(this);
-//     this.state = {
-
-//         isOpen:false,
-//         isDisabled:false,
-//         swipeToClose:true,
-//         sliderValue:0.3,
-//         landmarkId : '',
-//         landmarkName: 'Pasadena Coffee House',
-//         landmarkPhotoCount: 0,
-//         landmarkLeader: 'garvinling',
-//         landmarkLeaderImage : 'https://hd.unsplash.com/photo-1446226760091-cc85becf39b4'  //default image
-
-//     }
-
-//   }
-
-//   onRegionChange(region){
-//     // console.log(region);
-//   }
-
-//   _onPressLandmark(){
-
-//     this.props.navigator.push({
-
-//       id : 'LandmarkView',
-//       landmark_id : this.state.landmarkId
-
-//     });
-//   }
-
-//   _openLandMark(landmark){
-      
-//       var url = 'http://localhost:3000/api/photos/' + landmark.leader_image;  
-
-//       fetch(url,{method:'GET'})
-//         .then((response) => response.json())  
-//           .then( (responseData) => 
-//                 { 
-    
-//                     this.setState({
-
-//                       landmarkId:landmark._id,
-//                       landmarkName:landmark.name,
-//                       landmarkPhotoCount:landmark.photo_count,
-//                       landmarkLeaderImage:responseData.url 
-
-
-//                     });
-//                 }
-//           )
-
-//       this.refs.landmarkModal.open();
-
-//   }
-
-//   render(){
-
-//     return(
-
-//      <View style={styles.container}>
-
-//           <MapView style={styles.map}     
-//                    initialRegion={{
-//                     latitude: this.props.lat,
-//                     longitude: this.props.lng,
-//                     latitudeDelta: 0.0922,
-//                     longitudeDelta: 0.0421,
-//                   }}
-//                   onRegionChange={this.onRegionChange}
-//                   showsUserLocation={true}>
-
-//           {this.props.landmarks.map(landmark => (
-//             <MapView.Marker
-//               key={landmark._id}
-//               coordinate={{latitude:landmark.coordinates[0],longitude:landmark.coordinates[1]}}
-//               onPress={() => this._openLandMark(landmark)}
-//               style={{width:10,height:10}}
-//               image={require('../assets/icons/ic_place_2x.png')}
-
-//             >
-//             </MapView.Marker>
-//           ))}
-//           </MapView>
-
-//         <LandmarkModal style={[styles.modal, styles.landmarkModal]} position={"bottom"} ref={"landmarkModal"}>
-//           <Image style={styles.backgroundImage} source={{uri:this.state.landmarkLeaderImage}} resizeMode='cover' >
-//               <View style={styles.landmarkOverlay}/>
-//                <TouchableHighlight onPress={this._onPressLandmark} style={{flex:1}} underlayColor='rgba(0,0,0,0.2)'>
-//                 <View style={styles.landmarkData}>
-//                    <Text style={styles.landmarkName} onPress={this._onPressLandmark}>{this.state.landmarkName}</Text>
-//                    <View style={styles.countContainer}>
-//                     <Icon name='camera-alt' size={25} color='#ffffff' style={styles.landmarkIcon} />
-//                     <Text style={styles.landmarkInfo}>{this.state.landmarkPhotoCount}</Text>
-//                    </View> 
-
-//                    <View style={styles.leaderContainer}>
-//                     <Icon name='directions-walk' size={25} color='#ffffff' style={styles.landmarkIcon} />
-//                     <Text style={styles.landmarkInfo}>{this.state.landmarkPhotoCount}</Text>
-//                    </View>
-//                 </View>                  
-//               </TouchableHighlight>
-//           </Image>
-//         </LandmarkModal>
-//       </View>
-
-//     );
-//   }
-
-
-// }
 
 
 const NavigationBarHeader = {

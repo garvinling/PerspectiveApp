@@ -3,14 +3,16 @@
 
 import React, {Component} from 'React';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
+import LoginView from './LoginView';
 import {
 
 	StyleSheet,
 	Text,
 	View,
 	Navigator,
-	Image
+	Image,
+	TouchableHighlight,
+	Modal
 
 
 } from 'react-native';
@@ -23,13 +25,45 @@ class PhotoFeedImage extends Component{
 
 		super(props,context);
 
+    	this._favoriteImage = this._favoriteImage.bind(this);
+    	this.closeModal     = this.closeModal.bind(this);
+
+		//load user likes for the chosen landmark 
+		this.state = {
+
+			modalVisible : false
+
+		};
 
 	}
 
 
 
 
+	_favoriteImage(){
 
+		if(Object.keys(this.props.user).length === 0){
+			
+			//Prompt user the login with modal 
+
+			this.setState({modalVisible:true});
+		
+		} else {
+
+			alert('IMAGE FAVORITED');
+
+
+		}
+
+	}
+
+
+	closeModal(){
+
+		this.setState({modalVisible:false});
+
+
+	}
 
 
 
@@ -39,18 +73,37 @@ class PhotoFeedImage extends Component{
 				<Image style={styles.backgroundImage} source={{uri:this.props.photo.url}} resizeMode='cover'  />
 				
 				<View style={styles.likeBox}>
-					<Icon name='favorite-border' size={15} color='#ffffff' style={styles.likeIcon}/>
+					<TouchableHighlight onPress={this._favoriteImage}>
+						<Icon name='favorite-border' size={15} color='#ffffff' style={styles.likeIcon}/>
+					</TouchableHighlight>
+
 					<Text style={styles.likes}>  
 						{this.props.photo.likes}
 					</Text>
 				</View> 
-
 
 				<View style={styles.userNameBox}>
 					<Text style={styles.userName}>
 						perspectiveUser209
 					</Text>
 				</View> 
+
+
+
+				<Modal
+					animationType={"slide"}
+					transparent={false}
+					visible={this.state.modalVisible}
+					onRequestClose={() => {alert('DONE')}}
+				>
+					<View>
+
+						<LoginView close={this.closeModal}/>
+
+					</View>
+
+				</Modal>
+
 
 			</View>
 

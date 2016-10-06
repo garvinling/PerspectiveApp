@@ -68,7 +68,7 @@ class LandmarkView extends Component{
 
 				 {this.state.photoFeed.map(photo => (
 
-				 	<PhotoFeedImage key={photo._id} photo={photo} />
+				 	<PhotoFeedImage user={this.props.user} key={photo._id} photo={photo} />
 
 				 ))}
 

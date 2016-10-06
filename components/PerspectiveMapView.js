@@ -120,6 +120,13 @@ class PerspectiveMapView extends Component{
           ))}
           </MapView>
 
+
+
+
+
+
+
+
         <LandmarkModal style={[styles.modal, styles.landmarkModal]} position={"bottom"} ref={"landmarkModal"}>
           <Image style={styles.backgroundImage} source={{uri:this.state.landmarkLeaderImage}} resizeMode='cover' >
               <View style={styles.landmarkOverlay}/>
@@ -139,6 +146,8 @@ class PerspectiveMapView extends Component{
               </TouchableHighlight>
           </Image>
         </LandmarkModal>
+
+
       </View>
 
     );
