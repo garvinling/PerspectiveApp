@@ -7,7 +7,8 @@ import {
   StyleSheet,
   Text,
   View,
-  requireNativeComponent
+  requireNativeComponent,
+  StatusBar
 } from 'react-native';
 
 
@@ -23,6 +24,8 @@ class GridView extends Component{
 		return(
 
 		  <View style={styles.container}>
+                <StatusBar barStyle="light-content"/>
+
         <Text>GridView</Text>      
       </View>
 

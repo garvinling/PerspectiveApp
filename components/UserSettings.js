@@ -2,48 +2,22 @@
 
 
 import React, {Component} from 'React';
+import LoginView from './LoginView';
 import {
 
-	View,
-	Text,
-	StyleSheet
+  StyleSheet,
+  Text,
+  View,
+  requireNativeComponent,
+  StatusBar,
+  TouchableHighlight,
+  Navigator,
 } from 'react-native';
 
 
 
 
-const FBSDK = require('react-native-fbsdk');
-const {
-  LoginButton,
-  AccessToken
-} = FBSDK;
 
-var Login = React.createClass({
-  render: function() {
-    return (
-      <View>
-        <LoginButton
-          publishPermissions={["publish_actions"]}
-          onLoginFinished={
-            (error, result) => {
-              if (error) {
-                alert("login has error: " + result.error);
-              } else if (result.isCancelled) {
-                alert("login is cancelled.");
-              } else {
-                AccessToken.getCurrentAccessToken().then(
-                  (data) => {
-                    alert(data.accessToken.toString())
-                  }
-                )
-              }
-            }
-          }
-          onLogoutFinished={() => alert("logout.")}/>
-      </View>
-    );
-  }
-});
 
 
 
@@ -55,12 +29,29 @@ class UserSettings extends Component{
 
 	}
 
+	 _renderScene(route,navigator){
+    
+	    if(route.id === 'Settings') {
+	    	console.log('lol');
+	      return(
+
+	      	<Text>TODO: user setting views</Text>
+	      );
+	    
+	    } 
+  }
+
+
 	render(){
 
 		return(
-			<View>
-			<Text>lo33l</Text>
-			<Login/>
+			<View style={{flex:1}}>			      
+				  <StatusBar barStyle="light-content"/>
+			      <Navigator 
+			          initialRoute={{id:'Settings'}} 
+			          renderScene={(route,nav) => {return this._renderScene(route,nav)}} 
+			          navigationBar={<Navigator.NavigationBar style={{backgroundColor: '#5B3B81'}}     
+			          routeMapper={NavigationBarHeader}     />}     />
 			</View>
 		);
 	}
@@ -82,6 +73,33 @@ const styles = StyleSheet.create({
   }
 });
 
+const NavigationBarHeader = {
+
+    LeftButton: (route, navigator, index, navState) =>
+          { 
+            if(route.id === 'LandmarkView'){
+              return (
+                <TouchableHighlight underlayColor='rgba(91,59,129,0.5)' onPress={navigator.pop}>
+                 <View style={styles.backButton}>
+                    <Icon name='chevron-left' size={25} color='#ffffff' style={styles.landmarkIcon} />
+                 </View>
+                </TouchableHighlight>
+              );
+            } else {
+
+               return (<Text></Text>);
+
+            }
+          },
+    RightButton: (route, navigator, index, navState) =>
+           { 
+            return (<Text></Text>); 
+           },
+    Title: (route, navigator, index, navState) =>
+           { 
+            return (<Text style={styles.headerBarTitle}>{route.id}</Text>); 
+           }
+};
 
 
 module.exports = UserSettings;

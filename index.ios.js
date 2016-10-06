@@ -1,11 +1,11 @@
 'use strict';
 
 import React, { Component } from 'react';
-import PerspectiveMap from './components/PerspectiveMap';
+import PerspectiveMapNavigator from './components/PerspectiveMapNavigator';
 import GridView from './components/GridView';
 import UserSettings from './components/UserSettings';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
+import ModalManager from './components/ModalManager';
 
 import {
   AppRegistry,
@@ -16,11 +16,20 @@ import {
   requireNativeComponent,
   NavigatorIOS,
   TabBarIOS,
-  StatusBar
+  StatusBar,
+  Modal
+
 
 } from 'react-native';
 
 import MapView from 'react-native-maps';
+const FBSDK = require('react-native-fbsdk');
+
+const {
+  AccessToken
+} = FBSDK;
+
+
 
 // var MapView = require('react-native-maps');
 
@@ -39,11 +48,13 @@ class PerspectiveApp extends Component {
         user_latitude  : DEFAULT_LATITUDE,
         user_longitude : DEFAULT_LONGITUDE,
         landmarks      : [],
-        selectedTab    : 'map'
+        selectedTab    : 'map',
+        user           : {}
     }
 
     this.getUserLocation();
     this.getMarkersWithinArea();
+    this.checkLoginStatus();
  }
 
 
@@ -74,11 +85,32 @@ class PerspectiveApp extends Component {
  }
 
 
-  render() {
 
+
+
+
+
+ checkLoginStatus() {
+
+  if(this.state.user === null){
+    AccessToken.getCurrentAccessToken()
+      .then((result) => {
+        this.setState({user:result},function(){
+      });
+
+    });
+
+  } 
+ }
+
+
+
+
+  render() {
+    
     return (
 
-      <TabBarIOS
+     <TabBarIOS
         unselectedTintColor="slategray"
         tintColor="rebeccapurple"
         barTintColor="snow"
@@ -91,7 +123,8 @@ class PerspectiveApp extends Component {
                 selected={this.state.selectedTab === 'map'}
                 onPress= {() => {this.setState({selectedTab:'map'});}}
             >
-            <PerspectiveMap UserPosition={{lat:this.state.user_latitude,lng:this.state.user_longitude}} Landmarks={this.state.landmarks}/>
+            <PerspectiveMapNavigator UserPosition={{lat:this.state.user_latitude,lng:this.state.user_longitude}} Landmarks={this.state.landmarks}/>
+
           </Icon.TabBarItem>
          
             <Icon.TabBarItem
@@ -115,7 +148,12 @@ class PerspectiveApp extends Component {
             <UserSettings />            
           </Icon.TabBarItem>
 
-      </TabBarIOS>
+      </TabBarIOS> 
+
+
+
+
+           
     );
   }
 }

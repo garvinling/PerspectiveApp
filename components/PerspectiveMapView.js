@@ -4,9 +4,9 @@ import React, {Component,PropTypes} from 'React';
 import Button from 'react-native-button';
 import Callout from './Callouts';
 import LandmarkView from './LandmarkView';
-import Modal from 'react-native-modalbox';
+import LandmarkModal from 'react-native-modalbox';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
+import LoginView from './LoginView';
 import {
   StyleSheet,
   Text,
@@ -15,103 +15,11 @@ import {
   StatusBar,
   TouchableHighlight,
   Navigator,
-  Image
+  Image,
+  Modal
 } from 'react-native';
 
 import MapView from 'react-native-maps';
-
-
-class PerspectiveMap extends Component{
-
-	constructor(props){
-
-		super(props);
-
-    this.state = {
-
-        isOpen:false,
-        isDisabled:false,
-        swipeToClose:true,
-        sliderValue:0.3,
-        landmarkName: 'Pasadena Coffee House',
-        landmarkPhotoCount: 0,
-        landmarkLeader: 'garvinling',
-        landmarkLeaderImage : 'https://hd.unsplash.com/photo-1446226760091-cc85becf39b4'  //default image
-
-
-    }
-	}
-
-  onRegionChange(region){
-    // console.log(region);
-  }
-
-  _openLandMark(landmark){
-      
-      const url = 'http://localhost:3000/api/photos/' + landmark.leader_image;  
-
-      fetch(url,{method:'GET'})
-        .then((response) => response.json())  
-          .then( (responseData) => 
-                { 
-    
-                    this.setState({
-
-                      landmarkName:landmark.name,
-                      landmarkPhotoCount:landmark.photo_count,
-                      landmarkLeaderImage:responseData.url 
-
-
-                    });
-                }
-          )
-
-      this.refs.landmarkModal.open();
-
-  }
-
-
-
-  _renderScene(route,navigator){
-    
-   
-    if(route.id === 'MapView') {
-
-      return(
-        <PerspectiveMapView lat={this.props.UserPosition.lat} lng={this.props.UserPosition.lng} landmarks={this.props.Landmarks} navigator={navigator}/>
-      );
-    
-    } else if(route.id === 'LandmarkView'){
-
-      return (
-        
-        <LandmarkView navigator={navigator} landmark_id={route.landmark_id}/>
-
-      );
-
-    }
-  }
-
-
-
-
-
-	render(){
-		return(
-      <View style={{flex:1}}>
-      <StatusBar barStyle="light-content"/>
-      <Navigator 
-          initialRoute={{id:'MapView'}} 
-          renderScene={(route,nav) => {return this._renderScene(route,nav)}} 
-          navigationBar={<Navigator.NavigationBar style={{backgroundColor: '#5B3B81'}}     
-          routeMapper={NavigationBarHeader}     />}     />
-
-      </View>
-		);
-	}
-}
-
-
 
 
 
@@ -212,8 +120,7 @@ class PerspectiveMapView extends Component{
           ))}
           </MapView>
 
-
-        <Modal style={[styles.modal, styles.landmarkModal]} position={"bottom"} ref={"landmarkModal"}>
+        <LandmarkModal style={[styles.modal, styles.landmarkModal]} position={"bottom"} ref={"landmarkModal"}>
           <Image style={styles.backgroundImage} source={{uri:this.state.landmarkLeaderImage}} resizeMode='cover' >
               <View style={styles.landmarkOverlay}/>
                <TouchableHighlight onPress={this._onPressLandmark} style={{flex:1}} underlayColor='rgba(0,0,0,0.2)'>
@@ -231,7 +138,7 @@ class PerspectiveMapView extends Component{
                 </View>                  
               </TouchableHighlight>
           </Image>
-        </Modal>
+        </LandmarkModal>
       </View>
 
     );
@@ -239,36 +146,6 @@ class PerspectiveMapView extends Component{
 
 
 }
-
-
-const NavigationBarHeader = {
-
-    LeftButton: (route, navigator, index, navState) =>
-          { 
-            if(route.id === 'LandmarkView'){
-              return (
-                <TouchableHighlight underlayColor='rgba(91,59,129,0.5)' onPress={navigator.pop}>
-                 <View style={styles.backButton}>
-                    <Icon name='chevron-left' size={25} color='#ffffff' style={styles.landmarkIcon} />
-                 </View>
-                </TouchableHighlight>
-              );
-            } else {
-
-               return (<Text></Text>);
-
-            }
-          },
-    RightButton: (route, navigator, index, navState) =>
-           { 
-            return (<Text></Text>); 
-           },
-    Title: (route, navigator, index, navState) =>
-           { 
-            return (<Text style={styles.headerBarTitle}>{route.id}</Text>); 
-           }
-};
-
 
 
 
@@ -332,8 +209,6 @@ const styles = StyleSheet.create({
     // borderRadius: 4,
     // borderWidth: 0.5,
     // borderColor: 'red'
-
-
   },
   landmarkOverlay:{
     position:'absolute',
@@ -378,18 +253,9 @@ const styles = StyleSheet.create({
 
 });
 
-module.exports = PerspectiveMap;
 
 
-
-
-
-
-
-
-
-
-
+module.exports = PerspectiveMapView;
 
 
 
